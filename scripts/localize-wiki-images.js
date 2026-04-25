@@ -15,7 +15,7 @@ function ensureDirectory(dirPath) {
 function extractImageNames(text) {
   const names = new Set();
 
-  for (const match of text.matchAll(/"(?:image|foodImage|sampleImage)":\s*"([^"]+)"/g)) {
+  for (const match of text.matchAll(/(?:\"(?:image|foodImage|sampleImage)\"|(?:image|foodImage|sampleImage)):\s*\"([^\"]+)\"/g)) {
     const value = match[1];
 
     if (!value) {
@@ -27,6 +27,10 @@ function extractImageNames(text) {
     if (/\.(png|jpg|jpeg|webp|gif)$/i.test(fileName)) {
       names.add(fileName);
     }
+  }
+
+  for (const match of text.matchAll(/\[\[File:([^\]\|]+?\.(?:png|jpg|jpeg|webp|gif))(?=[\]\|])/gi)) {
+    names.add(match[1].trim());
   }
 
   return names;

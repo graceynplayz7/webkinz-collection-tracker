@@ -2791,6 +2791,11 @@ function buildLocalWikiImageUrl(imageSource) {
   }
 
   const fileName = decodeURIComponent(imageSource.split("/").pop().split("?")[0]);
+
+  if (!window.availableWikiImages?.has(fileName)) {
+    return "";
+  }
+
   return `/assets/wiki-images/${encodeURIComponent(fileName)}`;
 }
 
@@ -2824,7 +2829,11 @@ function renderImageTag(src, fallbackSrc, alt, className) {
   const safeAlt = escapeHtml(alt || "");
   const safeClassName = escapeHtml(className);
   const safeFallback =
-    fallbackSrc && fallbackSrc !== src ? ` onerror="this.onerror=null;this.src='${escapeHtml(fallbackSrc)}'"` : "";
+    fallbackSrc && fallbackSrc !== src
+      ? ` onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='true';this.src='${escapeHtml(
+          fallbackSrc
+        )}';}else{this.onerror=null;this.style.display='none';}"`
+      : "";
 
   return `<img class="${safeClassName}" src="${safeSrc}" alt="${safeAlt}" loading="lazy" referrerpolicy="no-referrer"${safeFallback} />`;
 }
