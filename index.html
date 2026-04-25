@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webkinz Collection Tracker</title>
+    <script>
+      if (window.location.protocol === "file:") {
+        window.location.replace("http://127.0.0.1:3000/");
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Manrope:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css?v=23" />
+  </head>
+  <body data-page="home">
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="brand-mark">
+            <img src="/assets/webkinz_logo.png" alt="Webkinz logo" />
+          </span>
+          <span>
+            <strong>Webkinz Collection Tracker</strong>
+            <small>Build your checklist as you go</small>
+          </span>
+        </a>
+
+        <nav class="site-nav">
+          <a href="/" aria-current="page">Home</a>
+          <a href="/collections">Collections</a>
+          <a href="/login">Login</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Collection progress, but cute</p>
+            <h1>Track every item set in one place.</h1>
+            <p class="hero-text">
+              Start with a simple collection tracker for furniture, themed sets,
+              exclusives, and more.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="/collections">Browse collections</a>
+              <a class="button button-secondary" href="/login">Log in to save</a>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <img class="hero-logo" src="/assets/webkinz_logo.png" alt="Webkinz logo" />
+            <img class="hero-art" src="/assets/toys.png" alt="Webkinz plush pets" />
+          </div>
+
+          <div class="hero-card">
+            <p class="card-label">Starter Snapshot</p>
+            <div class="stat-grid">
+              <article>
+                <strong id="home-total-collections">0</strong>
+                <span>Collections</span>
+              </article>
+              <article>
+                <strong id="home-total-items">0</strong>
+                <span>Items tracked</span>
+              </article>
+              <article>
+                <strong id="home-owned-items">0</strong>
+                <span>Owned items</span>
+              </article>
+              <article>
+                <strong id="home-completion-rate">0%</strong>
+                <span>Completion</span>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-header">
+          <div>
+            <p class="eyebrow">Preview</p>
+            <h2>Featured collections</h2>
+          </div>
+          <a class="text-link" href="/collections">View all collections</a>
+        </section>
+
+        <section id="featured-collections" class="collection-grid"></section>
+      </main>
+
+      <footer class="site-footer">
+        <section class="donate-card">
+          <div>
+            <p class="eyebrow">Support</p>
+            <h2>Like the tracker?</h2>
+            <p class="collection-meta">
+              If you want to support Grace and help keep the site growing, you can donate here.
+            </p>
+          </div>
+          <a
+            class="button button-primary"
+            href="https://buymeacoffee.com/graceynplayz"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Donate on Buy Me a Coffee
+          </a>
+        </section>
+      </footer>
+    </div>
+
+    <script src="/wacky-collection.js?v=23"></script>
+    <script src="/seeds-collection.js?v=23"></script>
+    <script src="/kinzcash-coins.js?v=23"></script>
+    <script src="/classic-plush-pets.js?v=23"></script>
+    <script src="/pets-list.js?v=23"></script>
+    <script src="/wallpaper-collection.js?v=23"></script>
+    <script src="/bobbleheads.js?v=23"></script>
+    <script src="/dispensers-collection.js?v=23"></script>
+    <script src="/app.js?v=23"></script>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile | Webkinz Collection Tracker</title>
+    <script>
+      if (window.location.protocol === "file:") {
+        window.location.replace("http://127.0.0.1:3000/profile");
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Manrope:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css?v=23" />
+  </head>
+  <body data-page="profile">
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="brand-mark">
+            <img src="/assets/webkinz_logo.png" alt="Webkinz logo" />
+          </span>
+          <span>
+            <strong>Webkinz Collection Tracker</strong>
+            <small>Build your checklist as you go</small>
+          </span>
+        </a>
+
+        <nav class="site-nav">
+          <a href="/">Home</a>
+          <a href="/collections">Collections</a>
+          <a href="/profile" aria-current="page">Profile</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="page-intro">
+          <p class="eyebrow">Profile</p>
+          <h1>Your account dashboard</h1>
+          <p>
+            See your saved account progress, your wanted list, and your overall
+            collection stats.
+          </p>
+        </section>
+
+        <section class="profile-layout">
+          <article class="profile-card" id="collector-card"></article>
+
+          <article class="profile-card">
+            <p class="card-label">Overall Stats</p>
+            <div class="profile-stats" id="profile-stats"></div>
+          </article>
+        </section>
+
+        <section class="section-header">
+          <div>
+            <p class="eyebrow">Wanted</p>
+            <h2>Starred items</h2>
+          </div>
+        </section>
+
+        <section id="wishlist-list" class="wishlist-list"></section>
+      </main>
+
+      <footer class="site-footer">
+        <section class="donate-card">
+          <div>
+            <p class="eyebrow">Support</p>
+            <h2>Like the tracker?</h2>
+            <p class="collection-meta">
+              If you want to support Grace and help keep the site growing, you can donate here.
+            </p>
+          </div>
+          <a
+            class="button button-primary"
+            href="https://buymeacoffee.com/graceynplayz"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Donate on Buy Me a Coffee
+          </a>
+        </section>
+      </footer>
+    </div>
+
+    <script src="/wacky-collection.js?v=23"></script>
+    <script src="/seeds-collection.js?v=23"></script>
+    <script src="/kinzcash-coins.js?v=23"></script>
+    <script src="/classic-plush-pets.js?v=23"></script>
+    <script src="/pets-list.js?v=23"></script>
+    <script src="/wallpaper-collection.js?v=23"></script>
+    <script src="/bobbleheads.js?v=23"></script>
+    <script src="/dispensers-collection.js?v=23"></script>
+    <script src="/app.js?v=23"></script>
+  </body>
+</html>
