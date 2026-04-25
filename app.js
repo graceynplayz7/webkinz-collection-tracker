@@ -36,6 +36,15 @@ function parseWikiRawTable(rawTable) {
     .filter(Boolean);
 }
 
+function escapeHtml(value = "") {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 const starterCollections = [
   {
     id: "action-figures",
@@ -2747,7 +2756,7 @@ if (window.extraCollections?.length) {
   starterCollections.push(...window.extraCollections);
 }
 
-function buildWikiImageUrl(imageSource) {
+function buildRemoteWikiImageUrl(imageSource) {
   if (!imageSource) {
     return "";
   }
@@ -2768,6 +2777,27 @@ function buildWikiImageUrl(imageSource) {
   return `https://webkinzguide.com/wiki/Special:Redirect/file/${encodeURIComponent(fileName)}`;
 }
 
+function buildLocalWikiImageUrl(imageSource) {
+  if (!imageSource) {
+    return "";
+  }
+
+  if (
+    /^https?:\/\//i.test(imageSource) &&
+    !imageSource.includes("webkinzguide.com") &&
+    !imageSource.includes("webkinzguidewiki")
+  ) {
+    return imageSource;
+  }
+
+  const fileName = decodeURIComponent(imageSource.split("/").pop().split("?")[0]);
+  return `/assets/wiki-images/${encodeURIComponent(fileName)}`;
+}
+
+function buildWikiImageUrl(imageSource) {
+  return buildLocalWikiImageUrl(imageSource) || buildRemoteWikiImageUrl(imageSource);
+}
+
 function deriveWallpaperSampleImage(imageSource) {
   if (!imageSource) {
     return "";
@@ -2785,13 +2815,18 @@ function deriveWallpaperSampleImage(imageSource) {
   return `${baseName}small${extension}`;
 }
 
-function escapeHtml(value = "") {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+function renderImageTag(src, fallbackSrc, alt, className) {
+  if (!src) {
+    return "";
+  }
+
+  const safeSrc = escapeHtml(src);
+  const safeAlt = escapeHtml(alt || "");
+  const safeClassName = escapeHtml(className);
+  const safeFallback =
+    fallbackSrc && fallbackSrc !== src ? ` onerror="this.onerror=null;this.src='${escapeHtml(fallbackSrc)}'"` : "";
+
+  return `<img class="${safeClassName}" src="${safeSrc}" alt="${safeAlt}" loading="lazy" referrerpolicy="no-referrer"${safeFallback} />`;
 }
 
 function normalizeCollections(collections) {
@@ -2805,10 +2840,15 @@ function normalizeCollections(collections) {
           : item.notes,
       food: item.food || "",
       foodImage: buildWikiImageUrl(item.foodImage),
+      foodImageFallback: buildRemoteWikiImageUrl(item.foodImage),
       sampleImage: buildWikiImageUrl(
         item.sampleImage || (collection.category === "Wallpaper" ? deriveWallpaperSampleImage(item.image) : "")
       ),
-      image: buildWikiImageUrl(item.image)
+      sampleImageFallback: buildRemoteWikiImageUrl(
+        item.sampleImage || (collection.category === "Wallpaper" ? deriveWallpaperSampleImage(item.image) : "")
+      ),
+      image: buildWikiImageUrl(item.image),
+      imageFallback: buildRemoteWikiImageUrl(item.image)
     }))
   }));
 }
@@ -3077,14 +3117,24 @@ function createCollectionCard(collection, compact = false) {
                 ? `<div class="item-visuals">
                     ${
                       item.image
-                        ? `<img class="item-thumb" src="${item.image}" alt="${item.name}" loading="lazy" referrerpolicy="no-referrer" />`
+                        ? renderImageTag(item.image, item.imageFallback, item.name, "item-thumb")
                         : ""
                     }
                     ${
                       item.foodImage
-                        ? `${item.image ? `<div class="item-thumb-link" aria-hidden="true">→</div>` : ""}<img class="item-thumb item-thumb-secondary" src="${item.foodImage}" alt="${item.food || "Food result"}" loading="lazy" referrerpolicy="no-referrer" />`
+                        ? `${item.image ? `<div class="item-thumb-link" aria-hidden="true">→</div>` : ""}${renderImageTag(
+                            item.foodImage,
+                            item.foodImageFallback,
+                            item.food || "Food result",
+                            "item-thumb item-thumb-secondary"
+                          )}`
                         : item.sampleImage
-                          ? `${item.image ? `<div class="item-thumb-link" aria-hidden="true">→</div>` : ""}<div class="item-thumb-preview"><img class="item-thumb item-thumb-secondary" src="${item.sampleImage}" alt="${item.name} small preview" loading="lazy" referrerpolicy="no-referrer" /><span>Small</span></div>`
+                          ? `${item.image ? `<div class="item-thumb-link" aria-hidden="true">→</div>` : ""}<div class="item-thumb-preview">${renderImageTag(
+                              item.sampleImage,
+                              item.sampleImageFallback,
+                              `${item.name} small preview`,
+                              "item-thumb item-thumb-secondary"
+                            )}<span>Small</span></div>`
                         : ""
                     }
                   </div>`
@@ -3325,7 +3375,12 @@ function renderProfilePage() {
           <div class="wishlist-main">
             ${
               item.image || item.foodImage
-                ? `<img class="wishlist-thumb" src="${item.image || item.foodImage}" alt="${item.name}" loading="lazy" referrerpolicy="no-referrer" />`
+                ? renderImageTag(
+                    item.image || item.foodImage,
+                    item.image ? item.imageFallback : item.foodImageFallback,
+                    item.name,
+                    "wishlist-thumb"
+                  )
                 : ""
             }
             <div>
